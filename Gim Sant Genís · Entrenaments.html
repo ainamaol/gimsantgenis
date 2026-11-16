@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gim Sant Genís · Entrenaments</title>
+<style>
+:root{--bg:#f6f4ef;--cd:#fff;--tx:#1d2320;--mu:#667069;--ac:#d9531e;--ak:#fff;--bd:#e1ddd3;--ok:#e8f1ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#151a17;--cd:#1f2622;--tx:#eef1ee;--mu:#9aa59e;--ac:#ff7a45;--ak:#1a1109;--bd:#2f3832;--ok:#233229}}
+:root[data-theme="dark"]{--bg:#151a17;--cd:#1f2622;--tx:#eef1ee;--mu:#9aa59e;--ac:#ff7a45;--ak:#1a1109;--bd:#2f3832;--ok:#233229}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;max-width:640px;margin-inline:auto;padding:16px 14px 40px}
+h1{font-size:22px;margin:4px 0 0}h2{font-size:17px;margin:0 0 8px}.sub{color:var(--mu);margin:2px 0 14px;font-size:14px}
+.card{background:var(--cd);border:1px solid var(--bd);border-radius:14px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;margin:10px 0 6px;font-size:14px}label:first-child{margin-top:0}
+.row{display:flex;align-items:center;gap:10px}.row>div{flex:1}
+.step{width:46px;height:46px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:24px}
+.num{font-size:26px;font-weight:700;min-width:44px;text-align:center}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{padding:10px 14px;border-radius:999px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:15px}
+.chip.on{background:var(--ac);color:var(--ak);border-color:var(--ac);font-weight:600}
+select{width:100%;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:16px}
+.go{width:100%;margin-top:14px;padding:15px;border:0;border-radius:12px;background:var(--ac);color:var(--ak);font-size:17px;font-weight:700}
+.sec{display:flex;gap:8px;margin-top:10px}.sec button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);font-size:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.kv{background:var(--ok);border-radius:10px;padding:10px}.kv b{display:block;font-size:22px;line-height:1.1}.kv span{font-size:12px;color:var(--mu)}
+.ex{display:flex;gap:10px;align-items:center;margin:0 0 12px}
+.d{color:var(--mu);font-size:14px}.t{font-size:11px;font-weight:700;background:var(--ok);padding:1px 7px;border-radius:99px;margin-left:4px;vertical-align:2px}
+.mt{font-size:13px}.hd{font-weight:700;margin:12px 0 6px}details{border:1px solid var(--bd);border-radius:12px;padding:10px 12px;margin-top:10px;background:var(--bg)}summary{font-weight:600;font-size:14px}.ck{display:flex;gap:8px;align-items:center;font-weight:400;margin:2px 0;padding:5px 0;font-size:15px}.ck input{width:20px;height:20px;flex:none}.gh{font-size:12px;font-weight:700;color:var(--mu);text-transform:uppercase;margin:10px 0 2px}ul,ol{margin:0;padding-left:22px}li{margin:0 0 5px}p{margin:6px 0}
+#tm{display:none;position:fixed;inset:0;z-index:99;color:#fff;text-align:center;flex-direction:column;justify-content:space-between;align-items:center;padding:calc(env(safe-area-inset-top,0px) + 16px) 16px calc(env(safe-area-inset-bottom,0px) + 20px);transition:background .3s}
+#tm .k{font-size:clamp(22px,6vw,34px);font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+#tm .big{font-size:clamp(90px,34vw,260px);font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+#tm .s{font-size:clamp(18px,5vw,28px);opacity:.92}#tm .tt{font-size:15px;opacity:.8}
+#tm .bt{display:flex;gap:12px;width:100%;max-width:480px}#tm .bt button{flex:1;padding:16px;border-radius:14px;border:2px solid #fff;background:rgba(255,255,255,.18);color:#fff;font-size:18px;font-weight:700}
+</style>
+</head>
+<body>
+<h1>Gim Sant Genís</h1>
+<p class="sub">Generador d’entrenaments per fer-los nosaltres</p>
+<div class="card">
+  <label>Quantes persones sou?</label>
+  <div class="row"><button class="step" id="mi" aria-label="Menys">−</button><div class="num" id="n">6</div><button class="step" id="pl" aria-label="Més">+</button></div>
+  <label>Què volem treballar? (se’n poden triar diverses)</label>
+  <div class="chips" id="zs"></div>
+  <div class="row"><div><label>Escalfament</label><select id="wu"></select></div><div><label>Estiraments</label><select id="sx"></select></div></div>
+  <label>Format de circuit</label><select id="fm"></select>
+  <label>O tria un circuit preparat de l’Alex</label><select id="pr"></select>
+  <details><summary>Exercicis que vull incloure (<span id="ci">0</span>)</summary><div id="li"></div></details>
+  <details><summary>Exercicis que vull excloure (<span id="ce">0</span>)</summary><div id="le"></div></details>
+  <div class="row"><div><label>Minuts de treball</label><select id="tw"></select></div><div><label>Durada total</label><select id="tt"></select></div></div>
+  <button class="go" id="go">Genera entrenament</button>
+</div>
+<div id="out"></div>
+<div id="tm"></div>
+<script>
+var MN={mat:["Esterilles",0],step:["Steps",0],man:["Manuelles (0,5–3 kg)",0],bal:["Pilotes de pilates",0],trx:["TRX",3],kb8:["Kettlebell 8 kg",2],kb12:["Kettlebell 12 kg",1],pil5:["Pilota medicinal 5 kg",1],tob:["Turmelleres 1 kg",2],corda:["Corda de saltar",1],cordac:["Corda de crossfit",1],banc:["Banc",1],barra:["Barra amb pes",1],rod:["Rodillo",1],bosu:["Bosu",1],esc:["Escenari",-1],par:["Paret",-1]};
+// nom, zones, material, descripció
+var RAW=[
+["Flexions","B","mat","Cos recte, colzes a 45°. Si cal, amb els genolls a terra."],
+["Flexions amb suport a l’step","B","mat,step","Una mà sobre l’step; canvia de costat a cada rotació."],
+["Rem TRX","B","trx","Cos inclinat enrere; porta el pit cap a les mans amb els colzes forçant."],
+["Dorsal TRX des de terra","B","trx,mat","Estirat sota el TRX, tira cap a tu amb els colzes oberts."],
+["Tríceps TRX","B","trx","Cos inclinat endavant, mans a l’alçada del front, estira els braços."],
+["Bíceps TRX","B","trx","Cos inclinat enrere, mans amunt; flexiona els colzes cap al front."],
+["Fondos de tríceps","B","esc","Mans a la vora de l’escenari, baixa els colzes enrere."],
+["Extensió de tríceps amb kettlebell","B","kb8","Kettlebell amb 2 mans darrere el cap, estira amunt; colzes quiets."],
+["Bíceps amb barra carregada","B","barra","Pes alt, colzes fixos, moviment controlat."],
+["Caminar amb mans + 2 flexions","BK","mat","Des de dret, baixa a planxa, camina amb les mans, 2 flexions i torna."],
+["Press d’espatlla amb manuelles","B","man","Pes moderat, sense arquejar l’esquena."],
+["Elevacions laterals","B","man","0,5–2 kg, braços lleugerament flexionats fins a l’alçada d’espatlla."],
+["Tríceps amb pilota de 5 kg","B","pil5","Pilota amb 2 mans darrere el cap, estira i flexiona."],
+["Ones amb corda de crossfit","BK","cordac","Una mà a cada extrem; ones alternes ràpides."],
+["Pallassos amb corda de crossfit","BK","cordac","Pallassos amb una mà a cada extrem, fent ones amb els braços."],
+["Gorila amb 2 kettlebells","BA","kb8:2","Inclinat, rema alternant cada kettlebell amb l’esquena plana."],
+["Colze-colze, mà-mà","BA","mat","Planxa pujant i baixant d’un colze, després l’altre."],
+["Squat jump","CK","","Squat profund i salt explosiu; aterra suau."],
+["Squat isomètric a la paret","C","par","5 s normal i 5 s de puntetes, alternant."],
+["Isomètric de puntetes","C","par","Esquena a la paret, genolls a 90°, sobre les puntetes."],
+["Hongaresa dreta/esquerra","C","banc,kb8","Peu del darrere al banc; una cama a cada rotació (kettlebell de 8 kg)."],
+["Lunge caminant amb 2 kettlebells","C","kb8:2","Passes llargs tocant el genoll a terra, de punta a punta de la sala."],
+["Squat amb kettlebell de 12","C","kb12","Cames obertes, toca el terra amb la pesa i puja."],
+["Pujar l’escenari amb kettlebell","C","esc,step,kb8","Puja amb una cama i baixa lent; canvia de cama a cada rotació."],
+["Baixar lent l’escenari amb step","C","esc,step","Baixa en 3 s; una cama a cada rotació."],
+["Lunge davant-darrere amb step","C","step","Lunge endavant i endarrere amb la mateixa cama (capoeira)."],
+["Tisores amb step i turmelleres","C","step,tob","Alterna cames amb el pes als turmells, ritme constant."],
+["Squat obert: 3 rebots + salt","CK","","Squat obert, 3 rebots tocant terra i salt tocant els talons."],
+["Pont de glutis","C","mat","Estirat d’esquena, puja malucs i prem glutis. Opció: kettlebell de 12 kg sobre els malucs."],
+["Caminar lateral en squat","C","","Posició de squat baixa, passos laterals llargs sense aixecar-te."],
+["Squat unipodal amb TRX","C","trx","Una cama, suport amb el TRX, baixa amb control."],
+["Squat amb llançament de pilota","CK","pil5","Squat i llança la pilota de 5 kg a la paret com un tir de bàsquet."],
+["Patada de glutis amb turmelleres","C","mat,tob","A quatre potes, eleva la cama estirada; una cama a cada rotació."],
+["Climbing","AK","mat","Planxa alta, genolls al pit alternant, ritme ràpid."],
+["Planxa","A","mat","Cos recte; versió fàcil amb genolls."],
+["Planxa amb genoll lateral","A","mat","Porta el genoll cap al colze del mateix costat."],
+["Planxa amb rotació","A","mat","Obre un braç cap al sostre i alterna costats."],
+["Rodillo","A","rod,mat","Genolls a l’esterilla, rodola endavant i endarrere amb l’abdomen ferm."],
+["Abdominals normals","A","mat","Puja el tronc sense estirar el coll."],
+["Planxa amb pilota de pilates","A","bal,mat","Avantbraços sobre la pilota, fes cercles petits."],
+["Planxa tocant les espatlles","AB","mat","Planxa alta, toca l’espatlla contrària sense balancejar."],
+["Tisores baixant","A","mat","Cames estirades a 20–30 cm de terra, creua-les."],
+["Planxa estirant braços","AB","mat","Planxa baixa, estira un braç endavant i alterna."],
+["Planxa amb peus al TRX","A","trx,mat","Peus als TRX, porta els genolls al pit i estira."],
+["Planxa amb peus al bosu","A","bosu,mat","Peus sobre el bosu, cos recte i abdomen ferm."],
+["Rotació russa amb pilota de 5 kg","A","pil5,mat","Asseguda en V, gira el tronc amb la pilota."],
+["Corda de genolls","K","cordac","Genolls alts amb una mà a cada extrem de la corda de crossfit, fent ones amb els braços."],
+["Burpees","K","","Qui no pugui saltar, que no salti."],
+["Pallassos","K","","Ritme alt i braços ben amunt."],
+["Genolls alts","K","","Corrent al lloc, genolls a l’alçada del maluc."]];
+var EX=RAW.map(function(r,i){var m={};r[2]&&r[2].split(",").forEach(function(x){var p=x.split(":");m[p[0]]=+p[1]||1});return{id:i,nm:r[0],z:r[1],m:m,d:r[3]}});
+var ZN={B:"Braços",C:"Cames",A:"Abdominal",K:"Cardio"},ZL=[["B","Braços"],["C","Cames"],["A","Abdominal"],["K","Cardio"],["M","Barreja"]];
+var PRE=[{"t":"Entreno 01","d":"8 de gener","f":["3 voltes de 10 estacions","50 s de treball + 20 s de descans"],"b":[[null,["Caminar amb mans + flexió (esterilla)","Caminar lunge de punta a punta de la sala (2 kettlebells de 8 kg)","TRX rem (TRX)","Squat jump amb TRX (TRX)","Corda de genolls (corda i esterilla)","Rodillo (rodillo + esterilla)","Squat isomètric (paret)","Fondos de tríceps (escenari)","Squat obert, 3 rebots tocant terra i salt tocant els talons","Planxa amb genolls laterals (esterilla)"]]],"n":["Vigilar amb les espatlles ben relaxades."],"p":[3,10,50,20,120,0,0]},{"t":"Entreno 02","d":"12 de gener","f":["3 voltes de 10 estacions","1’ de treball + 15 s de descans; 2’ de descans entre voltes","(Puja la intensitat, ja que descanses i recuperes.)"],"b":[[null,["Lunge dret pujant i baixant l’escenari (step)","Squat amb patada lateral dreta (rodones grogues)","Hongaresa (cadira i pes de 8 kg)","Lunge davant-darrere amb step, dret: capoeira (step)","Climbing (esterilla)","Planxa amb fitball (fitball)"]]],"n":["Estacions 7, 8, 9 i 10: igual que 1, 2, 3 i 4, però amb la cama esquerra."],"p":[3,10,60,15,120,0,0]},{"t":"Entreno 03","d":"19 de gener","f":["Cardio 6’ + sèrie de força 8 × 1’ sense descans (només una volta, intensitat alta)"],"b":[["Cardio (6’)",["Carrera d’anar + squat isomètric 10 s; carrera de tornar + 20 tisores"]],["Sèrie de força (8 × 1’ sense descans)",["TRX rem","TRX squat jump","TRX dorsal des de terra","Corda de genolls","Caminar amb mans amb 2 flexions (esterilla)","Kettlebell: extensió de tríceps per sobre el cap","Squat amb 7 rebots al terra","Planxa amb genoll lateral"]],["Seqüència",["6’ cardio","Sèrie de força","6’ cardio: carrera i squat jump a les puntes, 20","Tornar a fer la sèrie de força","6’ cardio: anar i venir + flexions, sumant 2 flexions cada vegada","Estiraments"]]],"n":[],"p":[2,8,60,0,120,0,0]},{"t":"Entreno 04","d":"22 de gener","f":["2 voltes de 6 estacions","Cada estació són dos exercicis: el segon és sempre 6 flexions + 10 squat jumps, repetit durant 1 minut","Descans de 30 s entre exercicis"],"b":[[null,["TRX + esterilla: panxa amunt, cul elevat, estirar i arrossegar les cames","2 kettlebells de 8 kg: gorila","Corda: pallassos","TRX rem forçant, pràcticament estirats","Kettlebell de 12 kg: squat amb cames obertes tocant el terra amb la pesa","Fitball: planxa"]],["Circuit final de 5’",["20 escaladors + planxa amb 5 genolls a cada costat + 4 caminar amb les mans amb una flexió"]]],"n":["Quan acabeu, guardeu una esterilla."],"p":[2,6,60,30,120,0,0]},{"t":"Entreno 05","d":"9 de febrer","f":["2 voltes de 6 estacions","2 exercicis + 26 squat jumps i descans el que quedi fins arribar al minut"],"b":[[null,["1’ climbing + 1’ caminar amb mans (2 esterilles)","Isomètric + tisores","Dorsal TRX + tríceps amb pilota de 5 kg","Rem TRX + flexions (esterilla)","Pallassos amb corda + squat 3 rebots tocant terra i salt tocant els talons","Hongaresa dreta amb pes de 8 kg + esquerra (banc)"]]],"n":[],"p":[2,6,60,0,120,0,0]},{"t":"Entreno 06","d":"12 de febrer","f":["2 voltes de 6 estacions","2 exercicis + 20 flexions i descans el que quedi fins arribar al minut"],"b":[[null,["Planxa amb genolls + 1’ caminar amb mans (2 esterilles)","TRX tríceps + bíceps amb barra","Dorsal TRX + abdominals (esterilla)","Rem TRX + gorila amb 2 pesos de 8 kg","Corda de genolls + planxa amb rotació","Peus esquena + climbing"]]],"n":["Peus esquena: planxa enlaire, mans sota el cul i puntes dels peus estirades, com si piquéssim de peus d’esquena en una piscina."],"p":[2,6,60,0,120,0,0]},{"t":"Entreno 07","d":"19 de febrer","f":["6 blocs de 2 exercicis, 50 s cada exercici","3 vegades seguides sense descans (ABABAB) i 1 minut de descans entre blocs"],"b":[[null,["Squat jump + planxa amb genoll lateral (esterilla)","Planxa estirant braços i intercalant colzes (esterilla) + extensió de tríceps amb kettlebell de 8 kg","Caminar lunge tocant el genoll a terra de punta a punta de la sala (kettlebell de 12 o 8 kg) + squat isomètric a la paret","Caminar lateral amb gomes, sempre tenses als turmells + squat tirant la pilota de 5 kg com un llançament de bàsquet cap a la paret (pilota de 5 kg i gomes)","TRX rem obert + rem tancat (2 TRX)","Pallassos amb corda + planxa tocant les espatlles (esterilla i corda)"]]],"n":["Alguns fa temps que no els fèiem."],"p":[6,6,50,0,60,0,0]},{"t":"Entreno 08","d":"23 de febrer","f":["2 voltes del circuit","Cada estació té l’exercici de força i, per descansar, 20 flexions fins a fer el minut"],"b":[[null,["Gorila (2 kettlebells de 8 kg) + 20 flexions al segon minut","Bíceps amb barra, amb bastant de pes","TRX rem","TRX dorsal, sortint asseguts a terra","Corda: pallassos","TRX tríceps","Planxa amb colzes canviant a braços rectes","Planxa amb colzes amb genoll lateral"]]],"n":["Tingueu les esterilles preparades per a les flexions: cadascú n’ha de tenir una."],"p":[2,8,60,0,120,0,0]},{"t":"Entreno 09","d":"2 de març","f":["Per parelles: mentre un fa una cosa, l’altre fa l’altra","6 × 5 minuts, descansant 2’. Important: bon ritme!","Qui mana és qui ha posat les repeticions: quan acaba, es canvia, i així fins a fer 5’."],"b":[[null,["40 squat jumps + planxa (esterilla)","25 flexions + TRX tríceps","Squat isomètric 30 s + caminar lunge amb 2 kettlebells de 8 kg tocant el genoll a terra","TRX rem + bíceps amb barra, 25","25 flexions + corda","20 climbing per cama + tisores baixant"]]],"n":[],"p":[6,1,300,0,120,0,0]},{"t":"Entreno 10","d":"5 de març","f":["Circuit de 10 estacions, 55 s de treball + 15 s de descans","2 minuts de descans entre voltes"],"b":[[null,["Squat isomètric: 5 s normal, 5 s de puntetes","Squat jump","Hongaresa dreta","Hongaresa esquerra (banc al costat de la paret: un fa una cama i l’altre l’altra, amb kettlebells de 8 kg)","Flexions amb step: 5 a cada costat fins a fer la sèrie (esterilla + step)","Corda: pallassos","TRX tríceps","Climbing","Planxa amb pilota gris","Burpees: qui no pugui saltar, que no salti"]]],"n":[],"p":[3,10,55,15,120,0,0]},{"t":"Entreno 11","d":"23 de març","f":["2 voltes de 6 estacions","Dos exercicis per minut, descansant 30 s"],"b":[[null,["Squat amb kettlebell de 12 kg tocant el terra + lunge caminant amb el mateix pes","TRX rem + flexions","TRX dorsal + rem gorila amb 2 kettlebells de 8 kg","TRX bíceps + corda de genolls","Step tisores amb els sacs grocs + planxa amb genoll lateral","Pujar i baixar l’escenari cama dreta + cama esquerra"]],["Per acabar, circuit de",["5 squat jumps + 2 flexions","10 squat jumps + 4 flexions","20 squat jumps + 8 flexions","30 squat jumps + 10 flexions; tornar a baixar fins al principi, repetint l’última sèrie"]]],"n":[],"p":[2,6,120,30,120,0,0]},{"t":"Entreno 12","d":"26 de març","f":["3 estacions de 4 exercicis, 50 s per exercici sense descans","2’ de descans entre estacions; 3 voltes de cada estació"],"b":[["Estació 1 · Abdomen (material: pilota gris, 3 esterilles, rodillo)",["Planxa amb pilota gris","Rodillo","Peus esquena","Planxa amb rotació"]],["Estació 2 · Braços (material: 2 TRX, 1 esterilla)",["Flexions","Tríceps","TRX rem","TRX dorsal des de terra"]],["Estació 3 · Cames (material: step i sacs d’1 kg)",["Squat jump","Isomètric a la paret","Tisores amb step i sacs grocs","Isomètric de puntetes"]]],"n":[],"p":[9,4,50,0,0,3,120]},{"t":"Entreno 13 · Circuit bàsic","d":"9 d’abril","f":["10 estacions, 1 minut de treball + 15 s de descans","2 minuts de descans entre voltes; 3 voltes"],"b":[[null,["Squat isomètric: 5 s normal, 5 s de puntetes","Squat jump","Hongaresa dreta","Hongaresa esquerra (banc al costat de la paret: un fa una cama i l’altre l’altra, amb kettlebells de 8 kg)","Caminar amb mans fent 3 flexions a baix","Corda: pallassos","TRX tríceps","TRX rem","Planxa amb pilota gris","Step tisores amb sacs grocs"]]],"n":[],"p":[3,10,60,15,120,0,0]},{"t":"Entreno 14","d":"20 d’abril","f":["Circuit de 2 voltes","Minut d’exercici + isomètric squat 1’ + 30 squat jumps, i descans fins arribar al minut"],"b":[[null,["Kettlebell de 8 o 12 kg: squat aixecant el pes cap endavant","Caminar lunge amb kettlebell de 8 kg","TRX rem, forçant si es pot","TRX flexions","TRX squat jump (ull amb aquesta sèrie!)","Baixar lent l’escenari amb step: una volta cama esquerra, la segona volta dreta"]]],"n":[],"p":[2,6,120,0,120,0,0]},{"t":"Entreno 15 · Cames","d":"27 d’abril","f":["8 exercicis de cames, 4 voltes: volta 1 i 3 cama esquerra, volta 2 i 4 cama dreta","Descansar 2 minuts entre voltes (32 estacions en total)"],"b":[[null,["Step escenari, cama esquerra","Salts a l’step amb sacs","TRX squat, cama esquerra","Capoeira amb step: lunge davant i lunge darrere amb la cama esquerra","Squat jump","Lunge amb kettlebell de 8 + 8 caminant","Isomètric a la paret","Squat obert amb 3 rebots al terra més salt tocant els talons"]]],"n":["Repetir amb la cama dreta a les voltes que toquin."],"p":[4,8,60,0,120,0,0]},{"t":"Entreno 16 · A i B","d":"30 d’abril","f":["4 sèries de 1 minut per exercici, ABAB","Descans de 2 minuts entre estacions; cada estació són 8 exercicis"],"b":[["A · Braços",["Flexions","Tríceps amb kettlebell de 8 kg","TRX rem obert","TRX dorsal des de terra","TRX rem tancat","Corda","Colze-colze i estirar un braç, estirar l’altre (a l’esterilla)","Bíceps amb barra carregada, amb força pes"]],["B · Abdomen",["Climbing (esterilla)","Planxes (esterilla)","Peus esquena (esterilla)","Rodillo (esterilla)","Planxes amb genolls","Planxes amb rotació","Abdominals normals","Planxa amb pilota gris"]]],"n":[],"p":[4,8,60,0,120,0,0]},{"t":"Entreno 17 · Braços","d":"18 de maig","f":["2 voltes de circuit de braços","1’ de treball + 1 minut de descans en què es fan 20 flexions"],"b":[[null,["Fondos de tríceps","Gorila amb 2 kettlebells de 8 kg","Flexions amb un punt de suport sobre un step: una volta dret i l’altra esquerre (esterilla + step)","TRX rem obert","TRX dorsal des de terra","TRX rem tancat","Corda de genolls","Colze-colze, mà-mà (esterilla)"]]],"n":[],"p":[2,8,60,60,120,0,0]},{"t":"Entreno 18 · Cames","d":"21 de maig","f":["Mateix plantejament que dilluns: 2 voltes, 8 exercicis d’1 minut","Descans: 30 squat jumps i la resta del minut en repòs"],"b":[[null,["Baixar l’escenari, cama dreta (step)","Baixar l’escenari, cama esquerra (step)","Climbing (esterilla)","Squat amb kettlebell de 12 kg","Pujar l’escenari amb kettlebell de 8 kg, cama dreta (step + kettlebell)","Pujar l’escenari amb kettlebell de 8 kg, cama esquerra (step + kettlebell)","Isomètric a la paret de puntetes","3 rebots al terra i tocar els talons"]]],"n":[],"p":[2,8,60,0,120,0,0]},{"t":"Entreno 19","d":"28 de maig","f":["Com el funcionament de dilluns: 2 voltes","Es canvia el primer exercici; el segon i el tercer són sempre el mateix (squat jump i isomètric)","Exercicis de 30 s amb canvis molt ràpids, ja que són sèries curtes; 30 s de descans"],"b":[[null,["Squat amb 3 rebots al terra tocant els genolls","Pujar l’escenari cama dreta amb kettlebell de 8 kg i step","Igual que l’anterior, cama esquerra","TRX squat jump","Baixar l’escenari cama dreta amb step","Igual que l’anterior, cama esquerra","Isomètric a la paret","Pont de glutis com la setmana passada: planxa enlaire, estirar cames i arronsar a poc a poc (esterilla)"]]],"n":[],"p":[2,8,30,30,120,0,0]},{"t":"Entreno 20 · ABC","d":"1 de juny","f":["3 circuits de 3 exercicis, ABCABCABC","1 minut de treball amb 15 s de descans; 2 minuts de descans entre circuits"],"b":[["Circuit 1",["Flexions (esterilla)","Extensió de tríceps (kettlebell de 8 kg) o fondos a l’escenari","Planxa colze-colze, mà-mà (esterilla)"]],["Circuit 2",["Isomètric","Squat jump","Lunge caminant amb 12 kg de punta a punta"]],["Circuit 3",["Tisores amb sacs grocs (step i sac de pes)","Corda","Climbing (esterilla)"]]],"n":[],"p":[3,9,60,15,120,0,0]},{"t":"Entreno 21","d":"8 de juny","f":["3 estacions, cada estació 3 voltes de 1’ de treball + 15 s de descans","2 minuts entre estacions"],"b":[["Estació 1",["Squat isomètric","Escales amb step amb 2 sacs","Squat jump"]],["Estació 2",["TRX rem","TRX dorsal","TRX tríceps"]],["Estació 3",["Corda","Flexions","Colze-colze, mà-mà"]]],"n":[],"p":[9,3,60,15,0,3,120]},{"t":"Entreno 22","d":"11 de juny","f":["Circuit de 2 voltes","6 estacions de dos exercicis (1’ + 1’ + 30 s de descans)"],"b":[[null,["Squat isomètric + squat jump","3 rebots al terra tocant els talons + lunge caminant de punta a punta amb kettlebell de 8 kg","Tisores + pont de glutis de puntetes amb kettlebell de 12 kg","TRX squat jump + climbing","Corda: pallassos + flexions","Tisores amb step i sacs + planxa amb genoll lateral"]]],"n":["Porteu aigua. Avui és una mica fort!"],"p":[2,6,120,30,120,0,0]},{"t":"Entreno 23","d":"29 de juny","f":["3 estacions, cada estació 3 voltes de 1 minut de treball + 15 s de descans","2 minuts entre estacions"],"b":[["Estació 1",["Squat isomètric","Escales amb step amb 2 sacs","Swing amb kettlebell de 8 o 12 kg"]],["Estació 2",["TRX rem","TRX dorsal","Squat jump"]],["Estació 3",["Corda","Flexions","Colze-colze, mà-mà"]]],"n":[],"p":[9,3,60,15,0,3,120]},{"t":"Entreno 24","d":"2 de juliol","f":["Circuit de 2 voltes","6 estacions de dos exercicis (1’ + 1’ + 30 s de descans); el primer exercici és sempre un squat isomètric","Descansar 2 minuts entre volta i volta"],"b":[[null,["Squat isomètric + squat jump","Isomètric + swing amb kettlebell de 8 o 12 kg","Isomètric + pont de glutis estirant les cames i arronsant sense baixar el cul (esterilla)","Isomètric + lunge cap enrere amb pes de 8 kg tocant el genoll a terra","Isomètric + climbing","Isomètric + corda: pallassos"]]],"n":["Porteu aigua. Avui és una mica fort!"],"p":[2,6,120,30,120,0,0]},{"t":"Entreno 25","d":"6 de juliol","f":["3 estacions, cada estació 3 voltes","Sense descans, un minut per exercici; 2 minuts entre estacions"],"b":[["Estació 1",["Planxes isomètriques","Climbing","Peus esquena"]],["Estació 2",["TRX rem","TRX bíceps","TRX tríceps"]],["Estació 3",["Corda","Flexions","Colze-colze, mà-mà"]]],"n":[],"p":[9,3,60,0,0,3,120]},{"t":"Entreno 26","d":"27 de juliol","f":["3 estacions, cada estació 3 voltes","Sense descans, un minut per exercici; 2 minuts entre estacions"],"b":[["Estació 1",["Flexions","Climbing","TRX rem","Squat jump"]],["Estació 2",["Llançament de bàsquet","Corda","TRX tríceps","Pujar i baixar escales"]],["Estació 3",["Planxes","Colze-colze, mà-mà"]]],"n":["L’abdominal amb dos exercicis ja n’hi ha prou, però si voleu feu-ne 3."],"p":[9,4,60,0,0,3,120]},{"t":"Entreno 27 · Última classe","d":"30 de juliol","f":["Circuit A o B, sèrie de cardio 1; circuit A o B, sèrie de cardio 2","3 voltes de cada circuit; sèries de cardio de 4 minuts"],"b":[["Circuit A",["Flexions (esterilla)","Extensió de tríceps (kettlebell de 8 kg)","Planxa colze-colze, mà-mà (esterilla)"]],["Circuit B",["Isomètric","Lunge caminant amb 12 kg de punta a punta","Corda"]],["Cardio 1",["Pujar i baixar escales i a dalt 2 squat jumps; cada vegada sumar 2 més, fins a 4 minuts"]],["Cardio 2",["En lloc de squat jumps, 3 rebots al terra tocant els talons; cada vegada 1 més, també 4 minuts"]]],"n":[],"p":[3,3,60,15,120,0,0]},{"t":"Entreno 28","d":"14 de setembre","f":["3 voltes, 10 exercicis","1’ de treball + 20 s de descans"],"b":[[null,["Pallassos","TRX rem","TRX dorsal","Step tisores amb sacs grocs, o fer-ho al la vorera en lloc de l’step","TRX tríceps","Colze-colze, mà-mà","Squat jump","Flexions (esterilla)","Corda","Climbing"]]],"n":[],"p":[3,10,60,20,120,0,0]},{"t":"Entreno 29","d":"21 de setembre","f":["3 estacions, cada estació 3 voltes","Sense descans, un minut per exercici; 2 minuts entre estacions"],"b":[["Estació 1",["Flexions","Pujar i baixar escales","TRX rem"]],["Estació 2",["Llançament de bàsquet","Corda","TRX tríceps"]],["Estació 3",["Planxes","Colze-colze, mà-mà","Squat jump"]]],"n":[],"p":[9,3,60,0,0,3,120]},{"t":"Entreno 30","d":"26 d’octubre","f":["3 estacions, cada estació 3 voltes","Sense descans, un minut per exercici; 2 minuts entre estacions"],"b":[["Estació 1",["Flexions","Press de banca (pit) amb la barra de pes","TRX tríceps"]],["Estació 2",["Llançament de bàsquet","Squat isomètric a la paret sobre el bosu","TRX squat jump"]],["Estació 3",["Climbing","Rodillo amb esterilla","TRX penjat aixecant cames"]]],"n":[],"p":[9,3,60,0,0,3,120]},{"t":"Entreno 31 · Cames","d":"29 d’octubre","f":["4 voltes: volta 1 i 3 cama dreta, volta 2 i 4 cama esquerra","1’ de treball + 15 s de descans"],"b":[[null,["Baixar l’escenari lent, dreta","Lunge hongaresa dreta: cama sobre la cadira, amb pesa de 8 kg","Capoeira, dreta","Squat jump","Pont de glutis amb la cama esquerra aixecada mirant al sostre, 8 kg a la cintura","Flexions amb el braç dret sobre l’step","Corda només amb el braç dret","TRX rem des de terra"]]],"n":[],"p":[4,8,60,15,120,0,0]}];
+var UW="Rotació",FN={lliure:"Circuit rotatiu",basic:"Circuit bàsic (10 estacions)",minut:"Minut a minut",intens:"Curt i intens",llarg:"Circuit llarg"},FMT={lliure:{},basic:{E:[10]},minut:{w:[50],r:[10]},intens:{w:[30,40]},llarg:{R:[1,2,3],w:[45,50,55,60,75,90]}};
+var st={n:6,sel:{M:1},inc:{},exc:{}};
+function $(i){return document.getElementById(i)}
+function rnd(a){return a[Math.floor(Math.random()*a.length)]}
+function shuf(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1)),t=a[i];a[i]=a[j];a[j]=t}return a}
+function drawZ(){$("zs").innerHTML=ZL.map(function(z){return '<button class="chip'+(st.sel[z[0]]?' on':'')+'" data-z="'+z[0]+'">'+z[1]+'</button>'}).join("")}
+$("zs").onclick=function(e){var z=e.target.getAttribute("data-z");if(!z)return;
+ if(z==="M")st.sel={M:1};else{delete st.sel.M;if(st.sel[z])delete st.sel[z];else st.sel[z]=1;if(!Object.keys(st.sel).length)st.sel={M:1}}drawZ()};
+$("mi").onclick=function(){st.n=Math.max(1,st.n-1);$("n").textContent=st.n};
+$("pl").onclick=function(){st.n=Math.min(12,st.n+1);$("n").textContent=st.n};
+[["wu",5],["sx",5]].forEach(function(x){$(x[0]).innerHTML=[0,3,5,7,10].map(function(v){return '<option value="'+v+'"'+(v==x[1]?" selected":"")+'>'+v+" min</option>"}).join("")});
+$("fm").innerHTML='<option value="auto">Automàtic (sorpresa)</option>'+Object.keys(FN).map(function(k){return '<option value="'+k+'">'+FN[k]+'</option>'}).join("");
+$("pr").innerHTML='<option value="">Cap: genera’n un de nou</option>'+PRE.map(function(c,i){return '<option value="'+i+'">'+c.t+' · '+c.d+'</option>'}).join("");
+$("tw").innerHTML='<option value="">Per defecte (32–35)</option>'+[20,25,30,35,40,45,50,60].map(function(v){return '<option value="'+v+'">'+v+" min</option>"}).join("");
+$("tt").innerHTML='<option value="">Per defecte (42–50)</option>'+[30,40,45,50,55,60,70,80,90].map(function(v){return '<option value="'+v+'">'+v+" min</option>"}).join("");
+function drawL(t,id){var h="";["B","C","A","K"].forEach(function(z){h+='<div class="gh">'+ZN[z]+"</div>"+EX.filter(function(e){return e.z[0]===z}).map(function(e){return '<label class="ck"><input type="checkbox" data-t="'+t+'" value="'+e.id+'"> '+e.nm+"</label>"}).join("")});$(id).innerHTML=h}
+drawL("i","li");drawL("e","le");
+document.addEventListener("change",function(ev){var c=ev.target,t=c.getAttribute&&c.getAttribute("data-t");if(!t)return;var o=t==="i"?"e":"i",v=c.value;
+ (t==="i"?st.inc:st.exc)[v]=c.checked;if(c.checked){(t==="i"?st.exc:st.inc)[v]=false;var x=document.querySelector('input[data-t="'+o+'"][value="'+v+'"]');if(x)x.checked=false}
+ $("ci").textContent=Object.keys(st.inc).filter(function(k){return st.inc[k]}).length;$("ce").textContent=Object.keys(st.exc).filter(function(k){return st.exc[k]}).length});
+// Sessió: ressegueix totes les estacions amb rotació
+function segs(E,R,w,r,rb,wu,sx,g,rbg){var s=[];
+ if(wu)s.push({k:"w",d:wu*60,l:"Escalfament",s:"Mobilitat d’espatlles i malucs, trot al lloc, squats lents"});
+ for(var a=0;a<R;a++)for(var i=0;i<E;i++){s.push({k:"t",d:w,l:"Treball",s:UW+" "+(i+1)+"/"+E+" · Ronda "+(a+1)+"/"+R});
+  if(i==E-1&&a==R-1)break;
+  if(i==E-1&&g&&(a+1)%g==0&&rbg>0)s.push({k:"b",d:rbg,l:"Descans entre estacions",s:"Beu aigua"});
+  else if(i==E-1&&rb>0)s.push({k:"b",d:rb,l:"Descans entre rondes",s:"Beu aigua"});else if(r>0)s.push({k:"r",d:r,l:"Canvi d’estació",s:UW=="Rotació"?"Tothom passa a l’estació següent":"Canvi d’exercici"})}
+ if(sx)s.push({k:"x",d:sx*60,l:"Estiraments",s:"Cames, esquena i espatlles, 30 s per posició"});return s}
+function sum(s){return s.reduce(function(t,x){return t+x.d},0)}
+function plan(n,wu,sx,fm,W,T){var E0=Math.max(n,6),c=[],F=FMT[fm]||{};
+ function has(k,v){return!F[k]||F[k].indexOf(v)>=0}
+ for(var E=E0;E<=12;E++)if(has("E",E))[30,40,45,50,55,60,75,90].forEach(function(w){if(!has("w",w))return;[10,15].forEach(function(r){if(!has("r",r))return;for(var R=1;R<=6;R++)if(has("R",R))[0,30,60,90].forEach(function(rb){
+  var wk=R*E*w,t=sum(segs(E,R,w,r,rb,wu,sx));c.push({E:E,R:R,w:w,r:r,rb:rb,t:t,fm:fm,sc:Math.max(0,Math.abs(wk-W.m)-W.h)/60*3+Math.max(0,Math.abs(t-T.m)-T.h)/60})})})});
+ if(!c.length)return fm!=="lliure"?plan(n,wu,sx,"lliure",W,T):{E:E0,R:2,w:45,r:10,rb:60,t:0,fm:"lliure",sc:1};
+ var m=Math.min.apply(null,c.map(function(x){return x.sc}));
+ if(m>0&&fm!=="lliure"){var o=plan(n,wu,sx,"lliure",W,T);if(o.sc===0)return o}
+ return rnd(c.filter(function(x){return x.sc<=m+1e-6}))}
+function showPre(i,wu,sx){var c=PRE[i],p=c.p;UW="Exercici";var S=segs(p[1],p[0],p[2],p[3],p[4],wu,sx,p[5],p[6]);UW="Rotació";var tot=sum(S);
+ var kv=[[p[0],"Rondes"],[p[1],"Exercicis per ronda"],[p[2]+" s","Treball"],[p[3]?p[3]+" s":"–","Canvi entre exercicis"],[(p[6]||p[4])?(p[6]||p[4])+" s":"–","Descans entre "+(p[6]?"estacions":"rondes")],["~"+Math.round(tot/60)+" min","Durada total"]];
+ $("out").innerHTML='<div class="card"><h2>'+c.t+' · '+c.d+'</h2>'+c.f.map(function(x){return '<p class="d">'+x+"</p>"}).join("")+'</div><div class="card">'+c.b.map(function(b){return (b[0]?'<div class="hd">'+b[0]+"</div>":"")+"<ol>"+b[1].map(function(x){return "<li>"+x+"</li>"}).join("")+"</ol>"}).join("")+c.n.map(function(x){return '<p class="d"><i>Nota:</i> '+x+"</p>"}).join("")+'</div>'+
+  '<div class="card"><h2>Cronòmetre</h2><p class="d">Estructura simplificada d’aquest circuit; si l’Alex no indicava el descans entre voltes, s’hi ha posat 2 min. No té en compte el nombre de persones.</p><div class="grid">'+kv.map(function(k){return '<div class="kv"><b>'+k[0]+'</b><span>'+k[1]+"</span></div>"}).join("")+'</div><button class="go" id="st">▶ Inicia la sessió</button></div>';
+ $("st").onclick=function(){run(S)};$("out").scrollIntoView({behavior:"smooth"})}
+function gen(){
+ var n=st.n,wu=+$("wu").value,sx=+$("sx").value,all=["K","C","B","A"],zl=st.sel.M?all:all.filter(function(z){return st.sel[z]});
+ var pr=$("pr").value;if(pr!=="")return showPre(+pr,wu,sx);
+ var W=$("tw").value?{m:$("tw").value*60,h:90}:{m:2010,h:90},T=$("tt").value?{m:$("tt").value*60,h:150}:{m:2760,h:240};
+ var fm=$("fm").value;if(fm==="auto")fm=rnd(Object.keys(FN));
+ var inc=EX.filter(function(e){return st.inc[e.id]}).slice(0,12),EXA=EX.filter(function(e){return!st.exc[e.id]});
+ var f=plan(Math.max(n,inc.length),wu,sx,fm,W,T),pools={},used=[],bud={},picks=[],nofit=[];
+ zl.forEach(function(z){pools[z]=shuf(EXA.filter(function(e){return e.z.indexOf(z)>=0}))});
+ function fits(e){return used.indexOf(e)<0&&Object.keys(e.m).every(function(k){var b=MN[k][1];return b<=0||(bud[k]||0)+e.m[k]<=b})}
+ function add(e){used.push(e);picks.push(e);Object.keys(e.m).forEach(function(k){bud[k]=(bud[k]||0)+e.m[k]})}
+ shuf(inc).forEach(function(e){if(fits(e))add(e);else nofit.push(e.nm)});
+ for(var i=picks.length;i<f.E;i++){var e=pools[zl[i%zl.length]].filter(fits)[0];
+  if(!e)e=shuf(EXA.filter(function(x){return zl.some(function(q){return x.z.indexOf(q)>=0})})).filter(fits)[0];
+  if(!e)break;add(e)}
+ var bk={},ks,ord=[];picks.forEach(function(e){(bk[e.z[0]]=bk[e.z[0]]||[]).push(e)});ks=Object.keys(bk);for(var j=0;ord.length<picks.length;j++)ks.forEach(function(k){if(bk[k][j])ord.push(bk[k][j])});picks=ord;
+ if(picks.length!==f.E){f=plan(Math.max(n,picks.length),wu,sx,fm,W,T);f.E=picks.length}
+ var warn=(nofit.length?'<p class="d">⚠ No han cabut per falta de material: '+nofit.join(", ")+'.</p>':"")+(picks.length<n?'<p class="d">⚠ Amb les exclusions hi ha menys estacions que persones.</p>':"");
+ var ml={};picks.forEach(function(e){Object.keys(e.m).forEach(function(k){ml[k]=(ml[k]||0)+e.m[k]})});
+ var mats=Object.keys(ml).map(function(k){var a=MN[k];return a[0]+(a[1]>=0?" ×"+ml[k]:"")});
+ var S=segs(f.E,f.R,f.w,f.r,f.rb,wu,sx),tot=sum(S),wk=f.R*f.E*f.w;
+ var kv=[[f.R,"Rondes"],[f.E,"Estacions (exercicis per ronda)"],[f.w+" s","Treball per exercici"],[f.r+" s","Canvi d’estació"],[f.rb?f.rb+" s":"–","Descans entre rondes"],["~"+Math.round(wk/60)+" min","Temps de treball"],["~"+Math.round(tot/60)+" min","Durada total"],[wu+" + "+sx+" min","Escalfament + estiraments"]];
+ function li(e,i){var mt=Object.keys(e.m).length?'<div class="mt">Material: '+Object.keys(e.m).map(function(k){return MN[k][0]}).join(", ")+"</div>":"";
+  return '<div class="ex"><div><b>'+(i+1)+". "+e.nm+'</b><span class="t">'+e.z.split("").map(function(z){return ZN[z]}).join(" · ")+'</span><div class="d">'+e.d+"</div>"+mt+"</div></div>"}
+ $("out").innerHTML='<div class="card"><h2>'+FN[f.fm]+' · '+n+(n===1?" persona":" persones")+'</h2><p class="d">Hi ha una sola estació de cada exercici. Cadascú comença en una estació diferent i, quan sona el canvi, tothom passa a la següent fins a fer-les totes. Si hi ha més estacions que persones, alguna queda buida.</p>'+warn+'<div class="grid">'+kv.map(function(k){return '<div class="kv"><b>'+k[0]+'</b><span>'+k[1]+"</span></div>"}).join("")+'</div></div>'+
+  '<div class="card"><h2>Estacions</h2>'+picks.map(li).join("")+"</div>"+
+  '<div class="card"><h2>Material</h2><ul>'+mats.map(function(m){return "<li>"+m+"</li>"}).join("")+"</ul></div>"+
+  '<div class="sec"><button id="re">🔀 Una altra proposta</button><button id="cp">📋 Copia</button></div>'+
+  '<div class="card" style="margin-top:12px"><h2>Cronòmetre</h2><p class="d">Escalfament '+wu+' min · '+f.R+' rondes de '+f.E+' rotacions de '+f.w+' s · estiraments '+sx+' min. Canvia de color a cada fase i els 3 últims segons fan so.</p><button class="go" id="st">▶ Inicia la sessió</button></div>';
+ var txt=FN[f.fm]+" · "+n+" persones\nRondes: "+f.R+" · Estacions: "+f.E+" · Treball: "+f.w+" s · Canvi: "+f.r+" s · Entre rondes: "+f.rb+" s (~"+Math.round(tot/60)+" min)\n"+picks.map(function(e,i){return (i+1)+". "+e.nm}).join("\n")+"\nMaterial: "+mats.join(", ");
+ $("re").onclick=gen;$("st").onclick=function(){run(S)};
+ $("cp").onclick=function(){try{navigator.clipboard.writeText(txt).then(function(){$("cp").textContent="✅ Copiat"})}catch(x){$("cp").textContent="No s’ha pogut copiar"}};
+ $("out").scrollIntoView({behavior:"smooth"})}
+// Cronòmetre
+var CL={w:"#2f6fd6",t:"#d9480f",r:"#2b8a3e",b:"#7b2cbf",x:"#0b7285",f:"#343a40"},T={},AC=null,WL=null;
+function beep(fr,du){try{var o=AC.createOscillator(),g=AC.createGain();o.frequency.value=fr;o.connect(g);g.connect(AC.destination);g.gain.value=.25;o.start();o.stop(AC.currentTime+du)}catch(e){}}
+function mmss(s){s=Math.max(0,s);return Math.floor(s/60)+":"+("0"+s%60).slice(-2)}
+function run(S){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume()}catch(e){}
+ try{navigator.wakeLock&&navigator.wakeLock.request("screen").then(function(l){WL=l}).catch(function(){})}catch(e){}
+ T={s:S,i:0,p:false,lb:-1};go(0);$("tm").style.display="flex";clearInterval(T.iv);T.iv=setInterval(tick,200)}
+function go(i){T.i=i;T.lb=-1;if(i>=T.s.length){T.i=T.s.length;clearInterval(T.iv);$("tm").style.background=CL.f;$("tm").innerHTML='<div class="k">Sessió acabada</div><div class="big">👏</div><div class="s">Bona feina!</div><div class="bt"><button id="cl">Tanca</button></div>';$("cl").onclick=close;beep(1320,.5);return}
+ T.end=Date.now()+T.s[i].d*1000;draw()}
+function draw(){var x=T.s[T.i],tm=$("tm");if(tm.getAttribute("data-i")!=T.i||!$("tb")){tm.setAttribute("data-i",T.i);tm.style.background=CL[x.k];
+ tm.innerHTML='<div><div class="k">'+x.l+'</div><div class="s">'+x.s+'</div></div><div class="big" id="tb"></div><div><div class="tt" id="tr"></div><div class="bt" style="margin-top:12px"><button id="pa">⏸ Pausa</button><button id="sk">⏭ Salta</button><button id="cl">✕</button></div></div>';
+ $("pa").onclick=pause;$("sk").onclick=function(){go(T.i+1)};$("cl").onclick=close}
+ var left=T.p?Math.ceil(T.pl/1000):Math.ceil((T.end-Date.now())/1000),rest=left;for(var j=T.i+1;j<T.s.length;j++)rest+=T.s[j].d;
+ $("tb").textContent=mmss(left);$("tr").textContent="Falten "+mmss(rest)+" de sessió";return left}
+function tick(){if(T.p||T.i>=T.s.length)return;var l=draw();if(l!==T.lb){T.lb=l;if(l>=1&&l<=3)beep(880,.12)}if(l<=0){beep(1320,.35);go(T.i+1)}}
+function pause(){if(T.p){T.end=Date.now()+T.pl;T.p=false;$("pa").textContent="⏸ Pausa"}else{T.pl=T.end-Date.now();T.p=true;$("pa").textContent="▶ Continua"}}
+function close(){clearInterval(T.iv);$("tm").style.display="none";$("tm").removeAttribute("data-i");try{WL&&WL.release()}catch(e){}}
+$("go").onclick=gen;drawZ();
+</script>
+</body>
+</html>
